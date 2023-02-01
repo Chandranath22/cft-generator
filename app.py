@@ -1,7 +1,8 @@
 # Entry point to the api
-from flask import Flask
+from flask import Flask, request
 import json
 from controller.get_parameters import read_yaml_file
+from controller.generate_cft import create_cloudformation_stack
 
 app = Flask(__name__)
 
@@ -21,8 +22,20 @@ def home():
 def params():
     res = {}
     res['params'] = read_yaml_file()
-    print(res)
     return (json.dumps(res))
+
+# Sample request data
+# {
+#     "BucketName":"cft-generator-bucket"
+# }
+
+
+@app.route('/create', methods=["POST"])
+def create_stack():
+    data = request.get_json()
+    res = {}
+    res['result'] = create_cloudformation_stack(data)
+    return json.dumps((res))
 
 
 if __name__ == '__main__':

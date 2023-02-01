@@ -7,15 +7,12 @@ Parameters:
     Type: String
     Description: Name of the S3 bucket to be created
     Default: my-s3-bucket
-    AllowedPattern: "[a-zA-Z0-9]+"
-    ConstraintDescription: "Alphanumeric characters only."
 
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref BucketName
-      DeletionPolicy: Retain
 
 Outputs:
   BucketName:

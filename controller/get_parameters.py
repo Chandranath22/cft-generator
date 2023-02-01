@@ -15,9 +15,6 @@ yaml.add_multi_constructor('', any_constructor, Loader=yaml.SafeLoader)
 
 
 def read_yaml_file():
-    with open('C:/Users/chand/Documents/Projects/cft-genrator/cft-generator/controller/s3_bucket.yaml', 'r') as file:
+    with open('s3_bucket.yaml', 'r') as file:
         parameters = yaml.safe_load(file)
         return parameters['Parameters']
-
-
-# print(read_yaml_file())
