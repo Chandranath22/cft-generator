@@ -23,9 +23,6 @@ def read_yaml_file(service_name):
         s3_object = s3.get_object(
             Bucket="cf-templates-poc-dev", Key=f"{service_name}/s3_bucket.yaml")
         parameters = yaml.safe_load(s3_object["Body"])
-
-        print(parameters['Parameters'])
-
         return parameters['Parameters']
 
     except Exception as e:

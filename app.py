@@ -21,7 +21,7 @@ def home():
 def getService():
     service_name = request.args.get("name")
     res = {}
-    print(service_name)
+    res["service_name"] = service_name
     res['params'] = read_yaml_file(service_name)
     return (json.dumps(res))
 
@@ -39,7 +39,6 @@ def getService():
 def create_stack():
     data = request.get_json()
     res = {}
-    print(data)
     res['result'] = create_cloudformation_stack(data)
     return json.dumps((res))
 
