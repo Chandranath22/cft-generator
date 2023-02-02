@@ -15,18 +15,23 @@ app = Flask(__name__)
 def home():
     return ('Working container')
 
-# Get params for S3 cloudformation template
 
-
-@app.route('/params')
-def params():
+# Select service currently only s3 is supported
+@app.route('/service')
+def getService():
+    service_name = request.args.get("name")
     res = {}
-    res['params'] = read_yaml_file()
+    print(service_name)
+    res['params'] = read_yaml_file(service_name)
     return (json.dumps(res))
+
 
 # Sample request data
 # {
-#     "BucketName":"cft-generator-bucket"
+#     "stack-name": "s3-bucket-creation",
+#     "params": {
+#         "BucketName": "sample-test-bucket-poc-30873"
+#     }
 # }
 
 
@@ -34,6 +39,7 @@ def params():
 def create_stack():
     data = request.get_json()
     res = {}
+    print(data)
     res['result'] = create_cloudformation_stack(data)
     return json.dumps((res))
 

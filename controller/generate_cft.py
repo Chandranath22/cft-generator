@@ -1,3 +1,4 @@
+import json
 import boto3
 
 
@@ -8,17 +9,17 @@ def create_cloudformation_stack(params):
 
         parameters = []
 
-        keys = params.keys()
+        keys = params['params'].keys()
 
         for key in keys:
             parameters.append({'ParameterKey': key,
-                               'ParameterValue': params[key],
+                               'ParameterValue': params['params'][key],
                                'UsePreviousValue': False
                                })
 
         response = client.create_stack(
-            StackName='s3-bucket-creation',
-            TemplateURL='https://demobucket1151.s3.ap-south-1.amazonaws.com/s3_bucket.yaml',
+            StackName=params['stack-name'],
+            TemplateURL='https://cf-templates-poc-dev.s3.amazonaws.com/s3/s3_bucket.yaml',
             Parameters=parameters,
             DisableRollback=False,
             TimeoutInMinutes=123,
@@ -29,5 +30,4 @@ def create_cloudformation_stack(params):
         return response['StackId']
 
     except Exception as e:
-        print(e)
-        return e
+        return f"Something went wrong--{e}"

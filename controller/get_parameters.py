@@ -1,4 +1,5 @@
 import yaml
+import boto3
 
 # Constructor to add support for tags to safe_load constructor
 
@@ -14,7 +15,18 @@ def any_constructor(loader, tag_suffix, node):
 yaml.add_multi_constructor('', any_constructor, Loader=yaml.SafeLoader)
 
 
-def read_yaml_file():
-    with open('s3_bucket.yaml', 'r') as file:
-        parameters = yaml.safe_load(file)
+def read_yaml_file(service_name):
+    try:
+        session = boto3.Session(profile_name='admin', region_name='us-east-1')
+
+        s3 = session.client("s3")
+        s3_object = s3.get_object(
+            Bucket="cf-templates-poc-dev", Key=f"{service_name}/s3_bucket.yaml")
+        parameters = yaml.safe_load(s3_object["Body"])
+
+        print(parameters['Parameters'])
+
         return parameters['Parameters']
+
+    except Exception as e:
+        print(e)
