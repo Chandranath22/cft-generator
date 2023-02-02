@@ -30,3 +30,4 @@ def read_yaml_file(service_name):
 
     except Exception as e:
         print(e)
+        return f"Something went wrong--{e}"
